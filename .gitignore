@@ -1,0 +1,11 @@
+# Saídas geradas pelo script
+fig*.png
+resultados.json
+
+# Relatório e ficheiros temporários do Word
+*.docx
+~$*
+
+# Python
+__pycache__/
+*.pyc
