@@ -142,6 +142,14 @@ print("soma sigma^2 =", round(float(np.sum(sig1 ** 2)), 6),
       "| ||H||_F^2 =", round(float(np.sum(np.abs(H1) ** 2)), 6))
 print(f"C(30 dB): det = {C1_det:.6f} | SVD = {C1_svd:.6f} bit/s/Hz")
 
+# Passo 3: capacidade desta realização pela fórmula do determinante em toda a
+# gama de SNR, ao lado da capacidade SISO log2(1+SNR) na mesma SNR (passo 4).
+C1_det_snr = np.array([capacidade_det(H1, s) for s in SNR])
+print("\nSNR(dB)  C_MIMO (det)  C_SISO   [bit/s/Hz, realização única]")
+for s in range(-10, 41, 10):
+    i = idx(s)
+    print(f"{s:6d}  {C1_det_snr[i]:11.3f}  {np.log2(1.0 + SNR[i]):7.3f}")
+
 # Validação sistemática: det vs SVD em 2000 realizações e todas as SNR
 Hv = canal_rayleigh(2, 2, 2000)
 sv = np.linalg.svd(Hv, compute_uv=False)
@@ -213,7 +221,8 @@ res = {
     "semente": SEMENTE, "N_MC": N_MC,
     "unica": {"H": [[str(np.round(z, 4)) for z in row] for row in H1],
               "sigma": sig1.tolist(), "C_det": C1_det, "C_svd": C1_svd,
-              "normaF2": float(np.sum(np.abs(H1) ** 2))},
+              "normaF2": float(np.sum(np.abs(H1) ** 2)),
+              "C_det_snr": {int(s): float(C1_det_snr[idx(s)]) for s in SNR_DB}},
     "err_max": err_max,
     "tabela": {int(s): {"awgn": C_siso_awgn[idx(s)], "siso": m_s[idx(s)],
                         "m22": m22[idx(s)], "ic22": ic22[idx(s)],
