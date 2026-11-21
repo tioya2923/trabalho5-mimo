@@ -2,8 +2,10 @@
 fig*.png
 resultados.json
 
-# Relatório e ficheiros temporários do Word
+# Relatórios, apresentação e ficheiros temporários do Office (não vão para o GitHub)
 *.docx
+*.pptx
+*.pdf
 ~$*
 
 # Python
